@@ -1,0 +1,96 @@
+name: 检查与部署
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # ① 静态检查：语法 + 密钥泄露 + 必需文件
+  check:
+    name: 代码检查
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: JS 语法检查
+        run: |
+          fail=0
+          for f in packages/*/js/*.js; do
+            node --check "$f" || { echo "语法错误: $f"; fail=1; }
+          done
+          exit $fail
+
+      - name: 扫描硬编码密钥
+        run: |
+          # 只检查源码，跳过第三方 SDK
+          hits=$(grep -rnE "eyJhbGciOi|sk-[A-Za-z0-9]{20,}" \
+                 --include=*.js --include=*.html --include=*.json . \
+                 | grep -v "js/vendor/" | grep -v "config.local.js.example" || true)
+          if [ -n "$hits" ]; then
+            echo "::error::检测到疑似密钥，请移除后再提交"
+            echo "$hits"
+            exit 1
+          fi
+
+      - name: 检查必需文件
+        run: |
+          set -e
+          for d in packages/full packages/local; do
+            for f in index.html css/style.css js/app.js; do
+              [ -f "$d/$f" ] || { echo "::error::缺少文件 $d/$f"; exit 1; }
+            done
+          done
+          for f in README.md LICENSE; do
+            [ -f "$f" ] || { echo "::error::缺少文件 $f"; exit 1; }
+          done
+          echo "全部必需文件就位"
+
+      - name: 确认 config.js 未被填入真实值
+        run: |
+          if grep -qE 'SUPABASE_URL\s*=\s*"https' packages/full/js/config.js; then
+            echo "::warning::packages/full/js/config.js 含真实 Supabase 地址，公开仓库请改用 config.local.js"
+          fi
+
+  # ② 部署演示站到 GitHub Pages（Settings → Pages → Source 选 GitHub Actions）
+  deploy:
+    name: 部署演示站
+    needs: check
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 清空演示配置（避免公开演示站连到私人数据库）
+        run: |
+          # 演示站强制走纯本地模式：不加载任何 Supabase 配置
+          rm -f packages/full/js/config.local.js
+          printf 'window.SUPABASE_URL = "";\nwindow.SUPABASE_ANON_KEY = "";\n' > packages/full/js/config.js
+
+      - uses: actions/configure-pages@v5
+
+      - name: 打包前端产物（排除仓库元数据与数据库脚本）
+        run: |
+          mkdir -p _site
+          cp -r packages/full/index.html packages/full/css packages/full/js packages/full/fonts _site/
+          rm -f _site/js/config.local.js.example
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

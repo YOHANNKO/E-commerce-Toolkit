@@ -1,0 +1,587 @@
+/* ============================================================
+   Lumen —— 跨境百宝囊 · 第二套界面皮肤
+   ------------------------------------------------------------
+   风格：极简 / 玻璃拟态 / 精致细节 / 轻松活泼 / 欧美极简科技风
+   基准：四张 Dribbble 风格 SaaS 界面参考
+
+   ★ 隔离原则（务必遵守）★
+   1. 本文件所有规则必须挂在 body[data-skin="lumen"] 之下，
+      绝不允许出现无前缀的全局选择器（@keyframes 除外）。
+   2. 不修改 css/style.css，不修改任何其它皮肤文件。
+   3. body 上没有 data-skin="lumen" 时，本文件全部规则失效。
+      删除本文件 + index.html 中的 <link> 即完全还原。
+
+   色板分工：
+     结构色（墨绿 #1d4d3b / 黑药丸 #171b26）→ 严肃
+     氛围色（桃/奶油/薄荷/雾蓝 马卡龙四色）  → 活泼
+   ============================================================ */
+
+/* ---------- 设计令牌 ---------- */
+body[data-skin="lumen"] {
+  --bg: #eef0f4;
+  --surface: rgba(255, 255, 255, .72);
+  --surface-solid: #ffffff;
+  --surface-2: rgba(255, 255, 255, .55);
+  --border: rgba(20, 24, 40, .08);
+  --border-glass: rgba(255, 255, 255, .65);
+
+  --text: #171b26;
+  --text-soft: #5c6470;
+  --text-mute: #9aa1ad;
+
+  --primary: #1d4d3b;
+  --primary-soft: rgba(29, 77, 59, .10);
+  --primary-ink: #173f30;
+
+  --accent: #7c5cff;
+  --peach: #ffd9cf;
+  --butter: #ffefc2;
+  --mint: #d3f2e3;
+  --sky: #dbe7ff;
+  --danger: #e5484d;
+  --warn: #e79d13;
+  --ok: #30a46c;
+
+  --pill: #171b26;
+
+  --radius-lg: 20px;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --radius-pill: 999px;
+
+  --shadow-lg: 0 24px 60px rgba(23, 27, 38, .10), 0 2px 8px rgba(23, 27, 38, .04);
+  --shadow: 0 8px 24px rgba(23, 27, 38, .06);
+  --shadow-pill: 0 2px 6px rgba(23, 27, 38, .10);
+
+  --glass-blur: blur(20px) saturate(1.4);
+  --ease: cubic-bezier(.2, .8, .2, 1);
+}
+
+/* ---------- 画布：浅灰底 + 四角冷暖晕染 ---------- */
+body[data-skin="lumen"] {
+  background:
+    radial-gradient(1200px 640px at 6% -8%, #fdf3f0 0%, rgba(253, 243, 240, 0) 62%),
+    radial-gradient(1100px 620px at 98% 4%, #eef4ff 0%, rgba(238, 244, 255, 0) 58%),
+    var(--bg);
+  color: var(--text);
+}
+
+/* ---------- 悬浮应用窗（最重要的形态变化） ---------- */
+body[data-skin="lumen"] #app {
+  margin: 12px;
+  min-height: calc(100vh - 24px);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-glass);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), var(--shadow-lg);
+}
+
+/* ---------- 侧栏 ---------- */
+body[data-skin="lumen"] .sidebar {
+  width: 232px;
+  flex: 0 0 232px;
+  background: transparent;
+  border-right: 1px solid var(--border);
+  height: calc(100vh - 24px);
+  top: 12px;
+}
+
+body[data-skin="lumen"] .brand {
+  padding: 20px 18px 12px;
+  gap: 11px;
+}
+body[data-skin="lumen"] .brand-logo {
+  width: 34px; height: 34px;
+  border-radius: 11px;
+  background: var(--pill);
+  color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 15px;
+  box-shadow: var(--shadow-pill);
+}
+body[data-skin="lumen"] .brand-title { font-size: 15px; font-weight: 800; letter-spacing: -.1px; }
+body[data-skin="lumen"] .brand-sub {
+  font-size: 10px;
+  letter-spacing: .8px;
+  color: var(--text-mute);
+  font-weight: 600;
+}
+
+/* 分组小标签（对标参考图 MAIN MENU） */
+body[data-skin="lumen"] .nav::before {
+  content: "MAIN MENU";
+  display: block;
+  padding: 14px 20px 7px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .9px;
+  color: var(--text-mute);
+  text-transform: uppercase;
+}
+
+body[data-skin="lumen"] .nav {
+  padding: 0 10px 8px;
+  gap: 2px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 导航项：默认透明 → hover 玻璃药丸 → 选中白实底药丸 */
+body[data-skin="lumen"] .nav-item {
+  height: 40px;
+  padding: 0 12px;
+  border-radius: var(--radius-pill);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-soft);
+  gap: 11px;
+  transition: background .18s var(--ease), color .18s var(--ease), box-shadow .18s var(--ease);
+}
+body[data-skin="lumen"] .nav-item .nav-ico { font-size: 15px; width: 20px; text-align: center; }
+body[data-skin="lumen"] .nav-item:hover {
+  background: rgba(255, 255, 255, .7);
+  color: var(--text);
+  box-shadow: var(--shadow-pill);
+}
+body[data-skin="lumen"] .nav-item.active {
+  background: var(--surface-solid);
+  color: var(--text);
+  font-weight: 700;
+  box-shadow: var(--shadow-pill);
+}
+body[data-skin="lumen"] .nav-item.active .nav-ico { filter: saturate(1.1); }
+
+body[data-skin="lumen"] .sidebar-foot {
+  border-top: 1px solid var(--border);
+  padding: 14px 16px;
+}
+body[data-skin="lumen"] .sidebar-credit { font-size: 10.5px; line-height: 1.6; }
+
+/* ---------- 主区 ---------- */
+body[data-skin="lumen"] .main { background: transparent; }
+
+body[data-skin="lumen"] .topbar {
+  height: 58px;
+  padding: 0 22px;
+  background: color-mix(in srgb, var(--surface-solid) 60%, transparent);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--border);
+}
+body[data-skin="lumen"] .topbar-actions { gap: 8px; }
+
+body[data-skin="lumen"] .view {
+  padding: 22px 22px 34px;
+}
+
+/* ---------- 卡片：玻璃 / 实白 双轨 ---------- */
+body[data-skin="lumen"] .card {
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  transition: box-shadow .18s var(--ease), transform .18s var(--ease);
+}
+body[data-skin="lumen"] .card + .card,
+body[data-skin="lumen"] .grid + .card,
+body[data-skin="lumen"] .card + .grid { margin-top: 16px; }
+body[data-skin="lumen"] .grid { gap: 16px; }
+
+/* 展示型卡片用玻璃，数据密集区保持实白 */
+body[data-skin="lumen"] .card.glass,
+body[data-skin="lumen"] .hero,
+body[data-skin="lumen"] .stats-band {
+  background: var(--surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-glass);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .6), var(--shadow);
+}
+/* 页面标题保持与其它模块一致的纯文字（去掉玻璃底与阴影） */
+body[data-skin="lumen"] .page-head {
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: none;
+  box-shadow: none;
+}
+
+body[data-skin="lumen"] .sec-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+body[data-skin="lumen"] .sec-title .cnt {
+  background: var(--surface-2);
+  border-radius: var(--radius-pill);
+  padding: 1px 8px;
+  font-size: 11px;
+  color: var(--text-soft);
+}
+
+/* 页面级大标题（对标参考图 "Exams"） */
+body[data-skin="lumen"] .page-head h1,
+body[data-skin="lumen"] .view > h1 {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -.5px;
+  margin: 0 0 4px;
+}
+body[data-skin="lumen"] .page-head p,
+body[data-skin="lumen"] .view > .sub { color: var(--text-soft); font-size: 13px; }
+
+/* 大数字排版（对标参考图 07 / 05 / $2,400） */
+body[data-skin="lumen"] .stat-n,
+body[data-skin="lumen"] .kpi-n,
+body[data-skin="lumen"] .big-num {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -.6px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+body[data-skin="lumen"] .stat-l,
+body[data-skin="lumen"] .kpi-l { font-size: 12px; color: var(--text-mute); font-weight: 600; }
+
+/* ---------- 按钮体系 ---------- */
+body[data-skin="lumen"] .btn {
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 9px 15px;
+  border: 1px solid var(--border);
+  background: var(--surface-solid);
+  color: var(--text);
+  transition: background .16s var(--ease), color .16s var(--ease), box-shadow .16s var(--ease), transform .12s var(--ease);
+}
+body[data-skin="lumen"] .btn:hover { box-shadow: var(--shadow-pill); }
+body[data-skin="lumen"] .btn:active { transform: scale(.98); }
+
+body[data-skin="lumen"] .btn.primary,
+body[data-skin="lumen"] .btn.btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+body[data-skin="lumen"] .btn.primary:hover,
+body[data-skin="lumen"] .btn.btn-primary:hover { background: #22593f; }
+
+body[data-skin="lumen"] .btn.ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-soft);
+}
+body[data-skin="lumen"] .btn.ghost:hover {
+  background: rgba(255, 255, 255, .7);
+  color: var(--text);
+  box-shadow: var(--shadow-pill);
+}
+
+body[data-skin="lumen"] .btn.sm { padding: 7px 12px; font-size: 12.5px; border-radius: 10px; }
+body[data-skin="lumen"] .btn.danger,
+body[data-skin="lumen"] .copy-btn.danger { background: var(--danger); border-color: var(--danger); color: #fff; }
+
+body[data-skin="lumen"] .icon-btn,
+body[data-skin="lumen"] .ghost-btn,
+body[data-skin="lumen"] .user-box .ubtn {
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-soft);
+  transition: background .16s var(--ease), color .16s var(--ease), box-shadow .16s var(--ease);
+}
+body[data-skin="lumen"] .icon-btn:hover,
+body[data-skin="lumen"] .ghost-btn:hover,
+body[data-skin="lumen"] .user-box .ubtn:hover {
+  background: var(--surface-solid);
+  color: var(--text);
+  box-shadow: var(--shadow-pill);
+}
+
+/* ---------- 分段控件 / 药丸切换（对标参考图 Feb 黑药丸） ---------- */
+body[data-skin="lumen"] .seg,
+body[data-skin="lumen"] .seg2 {
+  background: rgba(255, 255, 255, .6);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  gap: 4px;
+}
+body[data-skin="lumen"] .seg > button,
+body[data-skin="lumen"] .seg2 > button {
+  border-radius: var(--radius-pill);
+  border: none;
+  background: transparent;
+  color: var(--text-soft);
+  font-weight: 600;
+  font-size: 12.5px;
+  padding: 8px 15px;
+  white-space: nowrap;
+  transition: background .18s var(--ease), color .18s var(--ease), box-shadow .18s var(--ease);
+}
+body[data-skin="lumen"] .seg > button:hover,
+body[data-skin="lumen"] .seg2 > button:hover { color: var(--text); }
+body[data-skin="lumen"] .seg > button.active,
+body[data-skin="lumen"] .seg2 > button.active {
+  background: var(--pill);
+  color: #fff;
+  box-shadow: var(--shadow-pill);
+}
+body[data-skin="lumen"] .seg2 > button.active .tab-n,
+body[data-skin="lumen"] .ed-tabs button.active .tab-n {
+  background: rgba(255, 255, 255, .22);
+  color: #fff;
+}
+
+body[data-skin="lumen"] .subtabs { border-bottom: 1px solid var(--border); gap: 4px; }
+body[data-skin="lumen"] .subtab {
+  border-radius: var(--radius-pill);
+  padding: 9px 15px;
+  border-bottom: none;
+  margin-bottom: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-soft);
+}
+body[data-skin="lumen"] .subtab.active {
+  background: var(--pill);
+  color: #fff;
+  box-shadow: var(--shadow-pill);
+}
+
+/* ---------- 表单 ---------- */
+body[data-skin="lumen"] .field > span {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+body[data-skin="lumen"] input[type="text"],
+body[data-skin="lumen"] input[type="number"],
+body[data-skin="lumen"] input[type="password"],
+body[data-skin="lumen"] input[type="email"],
+body[data-skin="lumen"] input:not([type]),
+body[data-skin="lumen"] textarea,
+body[data-skin="lumen"] select {
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  font-size: 13.5px;
+  color: var(--text);
+  transition: border-color .16s var(--ease), box-shadow .16s var(--ease);
+}
+body[data-skin="lumen"] input:focus,
+body[data-skin="lumen"] textarea:focus,
+body[data-skin="lumen"] select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(29, 77, 59, .12);
+}
+body[data-skin="lumen"] ::placeholder { color: var(--text-mute); }
+
+/* ---------- 列表 / 表格 ---------- */
+body[data-skin="lumen"] .lrow {
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  transition: background .16s var(--ease), box-shadow .16s var(--ease);
+}
+body[data-skin="lumen"] .lrow:hover {
+  background: var(--surface-solid);
+  box-shadow: var(--shadow-pill);
+}
+body[data-skin="lumen"] .lrow .lrow-t { font-weight: 700; font-size: 13.5px; }
+body[data-skin="lumen"] .lrow .lrow-s { font-size: 11.5px; color: var(--text-mute); }
+body[data-skin="lumen"] .lrow.mb-picked {
+  background: var(--primary-soft);
+  box-shadow: none;
+}
+
+body[data-skin="lumen"] .ava {
+  border-radius: var(--radius-pill);
+  background: var(--sky);
+  color: #2b3a5e;
+  font-weight: 800;
+}
+
+/* 状态徽章：马卡龙底 + 同系深色字（对标参考图 Attend） */
+body[data-skin="lumen"] .badge2 {
+  border-radius: var(--radius-pill);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .2px;
+  padding: 2px 9px;
+  border: none;
+}
+body[data-skin="lumen"] .badge2.admin { background: var(--peach); color: #8a3417; }
+body[data-skin="lumen"] .badge2.admin_user { background: var(--butter); color: #7a5205; }
+body[data-skin="lumen"] .badge2.user { background: var(--sky); color: #29406e; }
+body[data-skin="lumen"] .badge2.local { background: var(--mint); color: #14563a; }
+
+body[data-skin="lumen"] .pill {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 12px;
+  padding: 3px 11px;
+  color: var(--text-soft);
+}
+
+/* ---------- 弹窗 / 浮层 ---------- */
+body[data-skin="lumen"] .modal-scrim {
+  background: rgba(23, 27, 38, .32);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+body[data-skin="lumen"] .modal {
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  animation: lumen-modal-in .18s var(--ease);
+}
+@keyframes lumen-modal-in {
+  from { opacity: 0; transform: scale(.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+body[data-skin="lumen"] .m-head h3 { font-size: 16px; font-weight: 800; letter-spacing: -.2px; }
+body[data-skin="lumen"] .m-x {
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  border: none;
+  width: 30px; height: 30px;
+  transition: background .16s var(--ease);
+}
+body[data-skin="lumen"] .m-x:hover { background: var(--peach); }
+
+body[data-skin="lumen"] .toast {
+  border-radius: var(--radius-pill);
+  background: var(--pill);
+  color: #fff;
+  box-shadow: var(--shadow-lg);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* 下拉/浮层菜单 */
+body[data-skin="lumen"] .menu-pop,
+body[data-skin="lumen"] .pop {
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ---------- 提示块 ---------- */
+body[data-skin="lumen"] .empty2 { border-radius: var(--radius); }
+body[data-skin="lumen"] .empty2 .s { color: var(--text-mute); }
+
+/* ---------- 项目特有的马卡龙氛围块 ---------- */
+body[data-skin="lumen"] .drop-zone {
+  border-radius: var(--radius);
+  border: 1.5px dashed var(--border);
+  background: rgba(255, 255, 255, .5);
+  transition: border-color .18s var(--ease), background .18s var(--ease);
+}
+body[data-skin="lumen"] .drop-zone.drag,
+body[data-skin="lumen"] .drop-zone:hover {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+body[data-skin="lumen"] .ed-thumb-card,
+body[data-skin="lumen"] .clock-card,
+body[data-skin="lumen"] .contact-card {
+  background: var(--surface-solid);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: transform .18s var(--ease), box-shadow .18s var(--ease);
+}
+body[data-skin="lumen"] .ed-thumb-card:hover,
+body[data-skin="lumen"] .clock-card:hover,
+body[data-skin="lumen"] .contact-card:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* 优先级标签沿用马卡龙色 */
+body[data-skin="lumen"] .prio-urgent { background: var(--peach); color: #8a3417; }
+body[data-skin="lumen"] .prio-high { background: var(--butter); color: #7a5205; }
+body[data-skin="lumen"] .prio-normal { background: var(--sky); color: #29406e; }
+body[data-skin="lumen"] .prio-low { background: var(--mint); color: #14563a; }
+
+/* ---------- 滚动条 ---------- */
+body[data-skin="lumen"] ::-webkit-scrollbar { width: 10px; height: 10px; }
+body[data-skin="lumen"] ::-webkit-scrollbar-track { background: transparent; }
+body[data-skin="lumen"] ::-webkit-scrollbar-thumb {
+  background: rgba(23, 27, 38, .14);
+  border: 3px solid transparent;
+  background-clip: content-box;
+  border-radius: var(--radius-pill);
+}
+body[data-skin="lumen"] ::-webkit-scrollbar-thumb:hover { background: rgba(23, 27, 38, .26); background-clip: content-box; }
+
+/* ============================================================
+   响应式
+   ============================================================ */
+@media (max-width: 760px) {
+  /* 手机端：关闭悬浮窗形态。
+     原因：#app 的 backdrop-filter 会成为 fixed 侧栏抽屉的定位基准（containing block），
+     导致抽屉不贴屏、随页面滚动而滚走（向上拖动异常），且被 overflow:hidden 裁剪。
+     故手机端恢复全屏布局流：画布渐变与卡片玻璃保留，悬浮窗仅桌面端启用。 */
+  body[data-skin="lumen"] #app {
+    margin: 0;
+    min-height: 100vh;
+    border-radius: 0;
+    overflow: visible;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  /* 抽屉侧栏：贴边全高、玻璃材质；不设 border-radius，与屏幕同形 */
+  body[data-skin="lumen"] .sidebar {
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
+    width: min(84vw, 300px);
+    flex: 0 0 auto;
+    border-radius: 0;
+    background: rgba(255, 255, 255, .94);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-right: 1px solid var(--border-glass);
+    box-shadow: 12px 0 40px rgba(23, 27, 38, .12);
+  }
+  /* 遮罩：Lumen 用更轻的墨色 + 轻模糊，避免经典深遮罩在浅色画布上的"变暗"突兀感 */
+  body[data-skin="lumen"] .scrim {
+    background: rgba(23, 27, 38, .24);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+  body[data-skin="lumen"] .view { padding: 18px 16px 30px; }
+  body[data-skin="lumen"] .topbar { height: 54px; padding: 0 16px; background: color-mix(in srgb, var(--surface-solid) 60%, transparent); }
+  body[data-skin="lumen"] .card { padding: 16px; border-radius: var(--radius-sm); }
+  /* 手机端分段控件：等分 + 药丸保持 */
+  body[data-skin="lumen"] .seg > button,
+  body[data-skin="lumen"] .seg2 > button { padding: 8px 10px; font-size: 12px; }
+  body[data-skin="lumen"] .brand-logo { width: 32px; height: 32px; border-radius: 10px; }
+}
+
+@media (max-width: 480px) {
+  body[data-skin="lumen"] .view { padding: 15px 13px 26px; }
+  body[data-skin="lumen"] .card { padding: 14px; }
+  body[data-skin="lumen"] .stat-n,
+  body[data-skin="lumen"] .kpi-n,
+  body[data-skin="lumen"] .big-num { font-size: 24px; }
+}

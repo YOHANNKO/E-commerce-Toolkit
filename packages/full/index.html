@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>跨境百宝囊 · Cross-Border Toolkit · Yohan</title>
+  <meta name="description" content="跨境电商百宝工具箱：汇率换算、世界时钟、美客多定价计算器、客户档案、日程与知识库。Cross-border e-commerce toolkit: currency, world clock, pricing, CRM, to-do and knowledge base." />
+  <!-- 字体自托管（css/fonts.css + fonts/*.woff2），不依赖 Google Fonts -->
+  <link rel="stylesheet" href="css/fonts.css?v=68" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><text y='52' font-size='52'>🪙</text></svg>" />
+  <link rel="stylesheet" href="css/style.css?v=68" />
+  <!-- ===== 界面皮肤（独立文件，可整包删除） =====
+       默认 disabled：不启用时浏览器不解析，对原有界面零影响。
+       启用由 js/app.js 的 applySkin() 控制；删除本行 + css/themes/lumen/ 目录即完全移除。 -->
+  <link rel="stylesheet" href="css/themes/lumen/lumen.css?v=68" id="skinLumen" disabled />
+</head>
+<body>
+  <!-- ===== Auth Screen ===== -->
+  <div id="authScreen" class="auth-screen show">
+    <div class="auth-card">
+      <!-- 登录屏也要能切语言 / 主题（登录前顶栏不可见，否则用户被语言锁死） -->
+      <div class="auth-util">
+        <button id="authLangBtn" class="auth-util-btn" data-i18n="auth.langBtn">中 / EN</button>
+        <button id="authThemeBtn" class="auth-util-btn" data-i18n-title="auth.themeBtn" title="切换主题">🌙</button>
+      </div>
+      <div class="auth-brand">📦 <span data-i18n="app.title">跨境百宝囊</span></div>
+
+      <!-- 两个入口：云端 / 本地 -->
+      <div class="auth-entries">
+        <button id="entryCloud" class="entry-btn active">
+          <span class="entry-ico">☁️</span>
+          <span class="entry-label" data-i18n="auth.cloudTab">云端登录</span>
+        </button>
+        <button id="entryLocal" class="entry-btn">
+          <span class="entry-ico">💾</span>
+          <span class="entry-label" data-i18n="auth.localTab">本地登录</span>
+        </button>
+      </div>
+
+      <!-- 云端表单 -->
+      <div id="cloudForm">
+        <div class="auth-tabs">
+          <button id="tabLogin" class="active" data-i18n="auth.login">登录</button>
+          <button id="tabSignup" data-i18n="auth.signup">注册</button>
+        </div>
+        <div class="auth-form">
+          <label class="field"><span data-i18n="auth.email">邮箱</span><input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com" /></label>
+          <label class="field auth-only-signup" id="nameField"><span data-i18n="auth.name">昵称</span><input id="authName" type="text" data-i18n-ph="common.optional" placeholder="可选" /></label>
+          <label class="field"><span data-i18n="auth.password">密码</span><input id="authPw" type="password" autocomplete="current-password" placeholder="••••••" /></label>
+          <button id="btnLogin" class="btn primary block" data-i18n="auth.loginBtn">登录</button>
+          <button id="btnSignup" class="btn primary block" data-i18n="auth.signupBtn" style="display:none">注册</button>
+        </div>
+      </div>
+
+      <!-- 本地表单 -->
+      <div id="localForm" style="display:none">
+        <p class="auth-local-tip" data-i18n="auth.localHint">数据保存在本机浏览器，无需账号密码，离线可用。</p>
+        <button id="btnLocalEnter" class="btn primary block">💾 <span data-i18n="auth.localEnter">进入本地模式</span></button>
+      </div>
+
+      <p class="auth-hint" id="authHint"></p>
+    </div>
+  </div>
+
+  <div id="app">
+    <!-- ===== Sidebar ===== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-logo">🪙</div>
+        <div class="brand-text">
+          <div class="brand-title" data-i18n="app.title">跨境百宝囊</div>
+          <div class="brand-sub">E-commerce Toolkit</div>
+        </div>
+      </div>
+      <nav class="nav" id="nav">
+        <button class="nav-item active" data-view="rates"><span class="nav-ico">💱</span><span data-i18n="nav.rates">汇率换算</span></button>
+        <button class="nav-item" data-view="clock"><span class="nav-ico">🕐</span><span data-i18n="nav.clock">世界时钟</span></button>
+        <button class="nav-item" data-view="pricing"><span class="nav-ico">🧮</span><span data-i18n="nav.pricing">定价计算器</span></button>
+        <button class="nav-item" data-view="crm"><span class="nav-ico">👥</span><span data-i18n="nav.crm">客户档案</span></button>
+        <button class="nav-item" data-view="todo"><span class="nav-ico">✅</span><span data-i18n="nav.todo">日程待办</span></button>
+        <button class="nav-item" data-view="knowledge"><span class="nav-ico">📚</span><span data-i18n="nav.knowledge">知识库</span></button>
+        <button class="nav-item" data-view="convert"><span class="nav-ico">📐</span><span data-i18n="nav.convert">单位换算</span></button>
+        <button class="nav-item" data-view="editor"><span class="nav-ico">🎨</span><span data-i18n="nav.editor">图片编辑</span></button>
+        <button class="nav-item" data-view="translate"><span class="nav-ico">🌐</span><span data-i18n="nav.translate">翻译</span></button>
+        <button class="nav-item" data-view="datamgr"><span class="nav-ico">🗄️</span><span data-i18n="nav.datamgr">数据管理</span></button>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="net-status" id="netStatus"><span class="dot"></span><span data-i18n="net.checking">网络检测中…</span></div>
+        <div class="sidebar-credit">
+          <div class="credit-dev" data-i18n="branding.dev">Developed by Yohan</div>
+          <div class="credit-copy" data-i18n="branding.copyright" data-i18n-name="branding.name">© 2026 跨境百宝囊 · 保留所有权利</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ===== Main ===== -->
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="menu">☰</button>
+        <div class="topbar-actions">
+          <div class="user-box" id="userBox"></div>
+          <button class="ghost-btn lang-btn" id="langBtn" title="Language / 语言">中 / EN</button>
+          <button class="icon-btn" id="themeBtn" title="Theme">🌙</button>
+        </div>
+      </header>
+
+      <section class="view active" id="view-rates"></section>
+      <section class="view" id="view-clock"></section>
+      <section class="view" id="view-pricing"></section>
+      <section class="view" id="view-crm"></section>
+      <section class="view" id="view-todo"></section>
+      <section class="view" id="view-knowledge"></section>
+      <section class="view" id="view-convert"></section>
+      <section class="view" id="view-editor"></section>
+      <section class="view" id="view-translate"></section>
+      <section class="view" id="view-datamgr"></section>
+    </main>
+  </div>
+
+  <!-- Overlay for mobile sidebar -->
+  <div class="scrim" id="scrim"></div>
+  <div id="toast" class="toast"></div>
+
+  <script src="js/config.js?v=68"></script>
+  <!-- ===== 本地私有配置（可选）=====
+       把 Supabase 配置写进 js/config.local.js（模板见 js/config.local.js.example）。
+       注入条件是「js/config.js 里的两个值为空」：
+         · 空着（默认 / 别人的机器）→ 不请求该文件，控制台无 404
+         · 你填了值  → 才去加载 config.local.js，用私有配置覆盖
+       该文件已被 .gitignore 忽略，不会提交到公开仓库。 -->
+  <script>
+    (function () {
+      if (window.SUPABASE_URL && window.SUPABASE_ANON_KEY) {
+        var s = document.createElement("script");
+        s.src = "js/config.local.js?v=68";
+        document.head.appendChild(s);
+      }
+    })();
+  </script>
+  <script src="js/vendor/supabase.umd.js?v=68"></script>
+  <script src="js/supabase.js?v=68"></script>
+  <script src="js/localdb.js?v=68"></script>
+  <script src="js/store.js?v=68"></script>
+  <script src="js/backup.js?v=68"></script>
+  <script src="js/data.js?v=68"></script>
+  <script src="js/i18n.js?v=68"></script>
+  <script src="js/auth.js?v=68"></script>
+  <script src="js/migrate.js?v=68"></script>
+  <script src="js/rates.js?v=68"></script>
+  <script src="js/clock.js?v=68"></script>
+  <script src="js/pricing.js?v=68"></script>
+  <script src="js/crm.js?v=68"></script>
+  <script src="js/todo.js?v=68"></script>
+  <script src="js/knowledge.js?v=68"></script>
+  <script src="js/collab.js?v=68"></script>
+  <script src="js/convert.js?v=68"></script>
+  <script src="js/editor.js?v=68"></script>
+  <script src="js/translate.js?v=68"></script>
+  <script src="js/datamgr.js?v=68"></script>
+  <script src="js/app.js?v=68"></script>
+</body>
+</html>

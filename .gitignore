@@ -1,0 +1,30 @@
+# 依赖目录（本项目无需构建，正常不会出现）
+node_modules/
+.pnpm-store/
+
+# 编辑器 / 系统
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# 本地环境
+.env
+.env.local
+
+# 构建产物（如需自行压缩，产物不入库）
+dist/
+*.log
+
+# ------------------------------------------------------------
+# ⚠️ 关于 js/config.js
+# 仓库里的 js/config.js 是「空占位模板」，允许提交。
+# 一旦你在其中填了真实 Supabase 地址 / anon key，请改用下面两种做法之一：
+#   A. 本地覆盖（推荐）：js/config.js 里填任意占位值，
+#      真正的密钥写进 js/config.local.js（下一行已忽略，永不入库）
+#   B. 直接忽略：取消 `# js/config.js` 那行的注释
+# js/config.js
+# ------------------------------------------------------------
+js/config.local.js
+packages/*/js/config.local.js
