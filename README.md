@@ -1,7 +1,17 @@
 # 跨境百宝囊 · Cross-Border Toolkit
 
+> 🇬🇧 **English** — Ten tools for cross-border sellers in one static page: exchange rates,
+> a Mercado Libre pricing calculator that works backwards from your target margin, CRM,
+> to-dos, knowledge base, an 18-language translator, batch image editing, unit conversion,
+> world clock, JSON backup. No framework, no build step, no npm.
+> Data stays in your browser's IndexedDB by default; bring your own Supabase for sync.
+> **The UI itself supports English** — click the "中 / EN" button in the top bar.
+> Full documentation below is in Chinese. MIT licensed.
+
 > 跨境电商卖家的一站式工具台 —— 汇率、定价、客户、待办、知识库、翻译、图片处理，
 > 全部装在一个**纯静态页面**里。零构建、零依赖、双击即用。
+
+![汇率换算 · Exchange Rates](docs/screenshot-rates.png)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![No Build](https://img.shields.io/badge/build-none-brightgreen)](.)
@@ -48,15 +58,16 @@
 ## 30 秒跑起来
 
 ```bash
-git clone https://github.com/yohan/crossborder-toolkit.git
-cd crossborder-toolkit/packages/local
+git clone https://github.com/YOHANNKO/E-commerce-Toolkit.git
+cd E-commerce-Toolkit/packages/local
 python3 -m http.server 3000
 # 或 npx serve .
 ```
 
 打开 <http://localhost:3000>，点「进入本地模式」即可。
 
-> 不想 clone？直接下载仓库 ZIP，解压后进 `packages/local`，起一个静态服务器
+> 不想 clone？直接下载仓库 ZIP（右侧 **Releases** 或绿色 Code 按钮里都有），
+> 解压后进 `packages/local`，起一个静态服务器
 > （`python3 -m http.server` / `npx serve` / VS Code 的 Live Server 都行）。
 > 不装任何东西、不用 npm install、没有构建步骤。
 
@@ -123,7 +134,8 @@ python3 -m http.server 3000
 │       └── supabase/migrations/   # 0001~0008 建库脚本
 ├── docs/
 │   ├── 纯本地版部署说明.md
-│   └── GitHub开源操作手册.md      # 上传/发布/打 tag 全流程
+│   ├── GitHub开源操作手册.md      # 上传/发布/打 tag 全流程
+│   └── screenshot-rates.png       # README 顶部截图
 ├── .github/workflows/ci.yml       # 语法检查 + 密钥扫描 + Pages 部署
 ├── CONTRIBUTING.md
 ├── SECURITY.md
